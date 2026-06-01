@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import type { ConverterState, Course, CourseType, Letter, Modifier, WeightedScale, Cutoff, System } from './types'
+import type { ConverterState, Course, Letter, Modifier, WeightedScale, Cutoff, System } from './types'
 import { SYSTEM_ROUTES } from './types'
 import { calcGPA, getSystemFromPath } from './calcGPA'
 import SystemPill from './SystemPill'
