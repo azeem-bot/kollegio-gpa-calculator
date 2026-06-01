@@ -1,0 +1,36 @@
+.gpa-calc-page {
+  background: #f2efe5;
+  min-height: 100vh;
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+}
+
+.gpa-calc-page__coming-soon {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 400px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.gpa-calc-page__coming-soon p {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(19, 38, 25, 0.65);
+}
+
+.gpa-calc-page__back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #227322;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+}

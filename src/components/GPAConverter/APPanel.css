@@ -1,0 +1,197 @@
+.ap-panel {
+  margin-top: 16px;
+}
+
+.ap-panel__mode-toggle {
+  display: flex;
+  background: var(--k-base);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.ap-panel__mode-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  background: transparent;
+  color: var(--content-secondary);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.ap-panel__mode-btn--active {
+  background: var(--bg-white);
+  color: var(--content-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(19, 38, 25, 0.1);
+}
+
+.ap-panel__table-wrap {
+  overflow-x: auto;
+}
+
+.ap-panel__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 460px;
+}
+
+.ap-panel__th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--content-secondary);
+  padding: 0 8px 8px;
+}
+
+.ap-panel__th--name    { width: 30%; }
+.ap-panel__th--type    { width: 22%; }
+.ap-panel__th--credits { width: 12%; }
+.ap-panel__th--grade   { width: 30%; }
+.ap-panel__th--remove  { width: 6%;  min-width: 32px; }
+
+.ap-panel__row:not(:last-child) .ap-panel__td {
+  border-bottom: 1px solid rgba(19, 38, 25, 0.08);
+}
+
+.ap-panel__td {
+  padding: 5px 4px;
+  vertical-align: middle;
+}
+
+.ap-panel__td--remove {
+  width: 32px;
+  text-align: center;
+}
+
+.ap-panel__name-input,
+.ap-panel__select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border-primary);
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--content-primary);
+  background: var(--bg-white);
+  transition: border-color 0.15s;
+  appearance: auto;
+}
+
+.ap-panel__name-input:focus,
+.ap-panel__select:focus {
+  outline: none;
+  border-color: var(--k-green);
+}
+
+.ap-panel__remove-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--content-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ap-panel__remove-btn:hover {
+  background: rgba(19, 38, 25, 0.08);
+  color: var(--content-primary);
+}
+
+.ap-panel__add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border: 1px dashed var(--border-primary);
+  border-radius: 7px;
+  background: transparent;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--content-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.ap-panel__add-btn:hover {
+  border-color: var(--k-green);
+  color: var(--k-green);
+}
+
+/* Shortcut mode */
+.ap-panel__shortcut {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ap-panel__shortcut-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--content-primary);
+}
+
+.ap-panel__shortcut-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ap-panel__shortcut-input {
+  width: 110px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--content-primary);
+  background: var(--bg-white);
+}
+
+.ap-panel__shortcut-input:focus {
+  outline: none;
+  border-color: var(--k-green);
+}
+
+.ap-panel__shortcut-sep {
+  font-size: 13px;
+  color: var(--content-secondary);
+}
+
+.ap-panel__shortcut-scale {
+  padding: 9px 12px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--content-primary);
+  background: var(--bg-white);
+}
+
+.ap-panel__shortcut-scale:focus {
+  outline: none;
+  border-color: var(--k-green);
+}
+
+.ap-panel__shortcut-note {
+  font-size: 12px;
+  color: var(--content-secondary);
+  margin: 0;
+  font-style: italic;
+}

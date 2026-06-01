@@ -1,0 +1,149 @@
+.idle-state {
+  min-height: calc(100vh - 64px);
+  background: #f2efe5;
+  padding-bottom: 80px;
+}
+
+.idle-state__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hero heading */
+.idle-state__h1 {
+  margin-top: 60px;
+  margin-bottom: 0;
+  width: min(632px, 100%);
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  line-height: 0.95;
+  text-align: center;
+}
+
+.idle-state__h1-dim {
+  color: rgba(19, 38, 25, 0.65);
+}
+
+.idle-state__h1-dark {
+  color: #132619;
+}
+
+/* Cards row */
+.idle-state__cards {
+  margin-top: 52px; /* 172 - 60 - h1 approx height */
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Individual card */
+.idle-card {
+  position: relative;
+  width: 340px;
+  height: 364px;
+  border-radius: 8px;
+  border: 1px solid rgba(19, 38, 25, 0.3);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  transition: box-shadow 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.idle-card:hover {
+  box-shadow: 0 4px 20px rgba(19, 38, 25, 0.12);
+  transform: translateY(-2px);
+}
+
+.idle-card__content {
+  position: absolute;
+  top: 23px;
+  left: 23px;
+  width: 285px;
+  z-index: 1;
+}
+
+.idle-card__title {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #132619;
+  letter-spacing: -0.64px;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+
+.idle-card__subtitle {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(19, 38, 25, 0.65);
+  line-height: 1.1;
+  margin: 0;
+  width: 200px;
+}
+
+.idle-card__illustration {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.idle-card__btn {
+  position: absolute;
+  left: 23px;
+  top: 303px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  background: #132619;
+  color: #f2efe5;
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Subtitle below cards */
+.idle-state__sub {
+  margin-top: 40px;
+  width: min(612px, 100%);
+  text-align: center;
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(19, 38, 25, 0.65);
+  letter-spacing: -0.48px;
+  line-height: 1.2;
+}
+
+@media (max-width: 1120px) {
+  .idle-state__cards {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .idle-state__h1 {
+    font-size: 32px;
+    margin-top: 40px;
+  }
+  .idle-card {
+    width: min(340px, 90vw);
+  }
+  .idle-state__sub {
+    font-size: 18px;
+  }
+}

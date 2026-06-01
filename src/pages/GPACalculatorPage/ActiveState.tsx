@@ -1,0 +1,419 @@
+import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import type { Course, Letter, Modifier, Cutoff } from '../../components/GPAConverter/types'
+import { GRADE_OPTIONS } from '../../components/GPAConverter/types'
+import { GP, WEIGHT } from '../../components/GPAConverter/calcGPA'
+import PercentagePanel from '../../components/GPAConverter/PercentagePanel'
+import LetterPanel from '../../components/GPAConverter/LetterPanel'
+import { ChevronDown, ChevronUp, ArrowRight } from './Icons'
+import './ActiveState.css'
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export type CalcSystem = 'ap' | 'pct' | 'letter'
+
+const SYSTEM_ROUTES: Record<CalcSystem, string> = {
+  ap:     '/gpa-converter/ap-gpa-calculator',
+  pct:    '/gpa-converter/percentage-to-gpa',
+  letter: '/gpa-converter/letter-grade-to-gpa',
+}
+
+const SYSTEM_LABELS: Record<CalcSystem, string> = {
+  ap:     'AP/Honors',
+  pct:    'Percentage',
+  letter: 'Letter grades',
+}
+
+const SYSTEM_OPTIONS: { value: CalcSystem; label: string }[] = [
+  { value: 'ap',     label: 'AP / Honors' },
+  { value: 'pct',    label: 'Percentage grade' },
+  { value: 'letter', label: 'Letter grades' },
+]
+
+const COURSE_TYPES = ['Regular', 'Honors', 'AP', 'IB', 'College'] as const
+const CREDIT_OPTIONS = ['0.5', '1.0', '2.0']
+const GRADE_DROPDOWN = GRADE_OPTIONS.filter(g => g !== 'D-')
+
+let nextId = 1
+
+// ─── GPA helpers ──────────────────────────────────────────────────────────────
+
+// AP: requires ≥ 3 valid courses (type + credits + grade filled)
+function calcApGPAs(courses: Course[]) {
+  const valid = courses.filter(c => c.type && c.credits > 0 && GP[c.grade] !== undefined)
+  if (valid.length < 3) return { unweighted: null as null, weighted: null as null }
+  const totalCredits = valid.reduce((s, c) => s + c.credits, 0)
+  const unweighted = valid.reduce((s, c) => s + GP[c.grade] * c.credits, 0) / totalCredits
+  const weighted   = valid.reduce((s, c) => s + (GP[c.grade] + (WEIGHT[c.type] ?? 0)) * c.credits, 0) / totalCredits
+  return { unweighted, weighted }
+}
+
+const STANDARD_CUTOFFS: [number, number][] = [
+  [93, 4.0], [90, 3.7], [87, 3.3], [83, 3.0], [80, 2.7],
+  [77, 2.3], [73, 2.0], [70, 1.7], [67, 1.3], [63, 1.0], [0, 0.0],
+]
+const RELAXED_CUTOFFS: [number, number][] = [
+  [90, 4.0], [87, 3.7], [83, 3.3], [80, 3.0], [77, 2.7],
+  [73, 2.3], [70, 2.0], [67, 1.7], [63, 1.3], [60, 1.0], [0, 0.0],
+]
+
+function calcPctGPA(pct: string, cutoff: Cutoff): number | null {
+  const p = parseFloat(pct)
+  if (isNaN(p) || p < 0 || p > 100) return null
+  const table = cutoff === 'standard' ? STANDARD_CUTOFFS : RELAXED_CUTOFFS
+  for (const [min, gpa] of table) {
+    if (p >= min) return gpa
+  }
+  return 0.0
+}
+
+function calcLetterGPA(letter: Letter, modifier: Modifier): number | null {
+  const key = modifier === 'none' ? letter : letter + modifier
+  const gpa = GP[key]
+  return gpa !== undefined ? gpa : null
+}
+
+// ─── Heading copy per system ───────────────────────────────────────────────────
+
+const HEADING: Record<CalcSystem, string> = {
+  ap:     'Add your courses',
+  pct:    'Enter your percentage',
+  letter: 'Enter your letter grade',
+}
+
+const SUBHEADING: Record<CalcSystem, string> = {
+  ap:     "Enter each class, its type, credit and your grade.\nWe'll calculate your weighted and unweighted GPA.",
+  pct:    "Enter your percentage score and select your school's cutoff standard.\nWe'll convert it to an unweighted 4.0 GPA.",
+  letter: "Select your letter grade and modifier.\nWe'll convert it to an unweighted 4.0 GPA.",
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+interface Props {
+  initialSystem: CalcSystem
+}
+
+export default function ActiveState({ initialSystem }: Props) {
+  const navigate    = useNavigate()
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // System + dropdown
+  const [system,       setSystem]       = useState<CalcSystem>(initialSystem)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  // AP course table
+  const [courses, setCourses] = useState<Course[]>([])
+
+  // Percentage panel
+  const [pct,    setPct]    = useState('')
+  const [cutoff, setCutoff] = useState<Cutoff>('standard')
+
+  // Letter panel
+  const [letter,   setLetter]   = useState<Letter>('A')
+  const [modifier, setModifier] = useState<Modifier>('none')
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  // ─── GPA values ─────────────────────────────────────────────────────────────
+
+  let gpaUnweighted: number | null = null
+  let gpaWeighted:   number | null = null
+
+  if (system === 'ap') {
+    const r = calcApGPAs(courses)
+    gpaUnweighted = r.unweighted
+    gpaWeighted   = r.weighted
+  } else if (system === 'pct') {
+    gpaUnweighted = calcPctGPA(pct, cutoff)
+  } else if (system === 'letter') {
+    gpaUnweighted = calcLetterGPA(letter, modifier)
+  }
+
+  // ─── System switching ────────────────────────────────────────────────────────
+
+  const handleSystemSelect = (newSystem: CalcSystem) => {
+    setDropdownOpen(false)
+    if (newSystem === system) return
+
+    // Confirm if AP courses would be lost
+    if (system === 'ap' && courses.length > 0) {
+      if (!window.confirm('Switching will clear your courses. Continue?')) return
+      setCourses([])
+    }
+
+    setSystem(newSystem)
+    navigate(SYSTEM_ROUTES[newSystem])
+  }
+
+  // ─── AP course management ────────────────────────────────────────────────────
+
+  const addCourse = () => {
+    setCourses(prev => [
+      ...prev,
+      { id: nextId++, name: '', type: 'Regular', credits: 1.0, grade: 'A' },
+    ])
+  }
+
+  const removeCourse = (id: number) => {
+    setCourses(prev => prev.filter(c => c.id !== id))
+  }
+
+  const updateCourse = (id: number, field: keyof Course, value: string) => {
+    setCourses(prev => prev.map(c => {
+      if (c.id !== id) return c
+      return { ...c, [field]: field === 'credits' ? parseFloat(value) : value }
+    }))
+  }
+
+  // ─── Render ──────────────────────────────────────────────────────────────────
+
+  const showWeighted = system === 'ap'
+
+  return (
+    <div className="active-state">
+      <div className="active-state__inner">
+
+        {/* ── Fix 2: "Your grading system" row floats ABOVE the white card ── */}
+        <div className="grading-system-row">
+          <span className="grading-system-row__label">Your grading system</span>
+
+          <div className="system-chip-wrap" ref={dropdownRef}>
+            <button
+              type="button"
+              className={`input-card__system-chip${dropdownOpen ? ' input-card__system-chip--open' : ''}`}
+              onClick={() => setDropdownOpen(o => !o)}
+              aria-haspopup="listbox"
+              aria-expanded={dropdownOpen}
+            >
+              <span>{SYSTEM_LABELS[system]}</span>
+              {dropdownOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </button>
+
+            {dropdownOpen && (
+              <div className="system-dropdown" role="listbox">
+                {SYSTEM_OPTIONS.map(opt => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    role="option"
+                    aria-selected={system === opt.value}
+                    className={`system-dropdown__item${system === opt.value ? ' system-dropdown__item--active' : ''}`}
+                    onClick={() => handleSystemSelect(opt.value)}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={false}
+                  disabled
+                  className="system-dropdown__item system-dropdown__item--disabled"
+                >
+                  International
+                  <span className="system-dropdown__coming-soon">Coming soon</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Fix 1 + 5: Two-column grid — output card aligns to top of input card ── */}
+        <div className="active-state__cols">
+
+          {/* Left: output card */}
+          <div className="output-card">
+            <div className="output-card__top-row">
+              <img src="/assets/gpa-calculator/bank-icon.svg" alt="" width="24" height="24" aria-hidden="true" />
+              <span className="output-card__top-label">Colleges use unweighted GPA</span>
+            </div>
+
+            <div className="output-card__section">
+              <div className="output-card__gpa-row">
+                <span className="output-card__value">
+                  {gpaUnweighted !== null ? gpaUnweighted.toFixed(1) : '—'}
+                </span>
+                <span className="output-card__scale">/4.0</span>
+              </div>
+              <p className="output-card__label">Unweighted GPA</p>
+            </div>
+
+            <div className="output-card__divider" />
+
+            <div className="output-card__section">
+              <div className="output-card__gpa-row">
+                <span className="output-card__value">
+                  {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : '—'}
+                </span>
+                <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
+              </div>
+              <p className="output-card__label">Weighted GPA</p>
+            </div>
+          </div>
+
+          {/* Right: white input card — heading/subtitle now live INSIDE */}
+          <div className="input-card">
+            {/* Fix 1: heading and subtitle inside the card */}
+            <h2 className="input-card__heading">{HEADING[system]}</h2>
+            <p className="input-card__subheading">
+              {SUBHEADING[system].split('\n').map((line, i) => (
+                <span key={i}>{line}{i === 0 && <br />}</span>
+              ))}
+            </p>
+
+            {/* ── AP: course table ── */}
+            {system === 'ap' && (
+              <>
+                {/* Fix 3: updated column widths */}
+                <div className="course-table__head">
+                  <span className="course-col course-col--name">Course name</span>
+                  <span className="course-col course-col--type">Course type</span>
+                  <span className="course-col course-col--credits">Credits</span>
+                  <span className="course-col course-col--grade">Grades</span>
+                  <span className="course-col course-col--remove" />
+                </div>
+
+                {courses.length === 0 ? (
+                  <p className="course-table__empty">
+                    No courses yet — add your first course below.
+                  </p>
+                ) : (
+                  <div className="course-table__body">
+                    {courses.map(course => (
+                      <div key={course.id} className="course-row">
+                        <div className="course-col course-col--name">
+                          <input
+                            type="text"
+                            className="course-input"
+                            value={course.name}
+                            placeholder="Course name"
+                            onChange={e => updateCourse(course.id, 'name', e.target.value)}
+                            aria-label="Course name"
+                          />
+                        </div>
+
+                        <div className="course-col course-col--type">
+                          <div className="course-select-wrap">
+                            <select
+                              className="course-select"
+                              value={course.type}
+                              onChange={e => updateCourse(course.id, 'type', e.target.value)}
+                              aria-label="Course type"
+                            >
+                              {COURSE_TYPES.map(t => (
+                                <option key={t} value={t}>{t}</option>
+                              ))}
+                            </select>
+                            <ChevronDown size={24} className="course-select__chevron" />
+                          </div>
+                        </div>
+
+                        <div className="course-col course-col--credits">
+                          <div className="course-select-wrap">
+                            <select
+                              className="course-select"
+                              value={course.credits.toFixed(1)}
+                              onChange={e => updateCourse(course.id, 'credits', e.target.value)}
+                              aria-label="Credits"
+                            >
+                              {CREDIT_OPTIONS.map(v => (
+                                <option key={v} value={v}>{v}</option>
+                              ))}
+                            </select>
+                            <ChevronDown size={24} className="course-select__chevron" />
+                          </div>
+                        </div>
+
+                        <div className="course-col course-col--grade">
+                          <div className="course-select-wrap">
+                            <select
+                              className="course-select"
+                              value={course.grade}
+                              onChange={e => updateCourse(course.id, 'grade', e.target.value)}
+                              aria-label="Grade"
+                            >
+                              {GRADE_DROPDOWN.map(g => (
+                                <option key={g} value={g}>{g}</option>
+                              ))}
+                            </select>
+                            <ChevronDown size={24} className="course-select__chevron" />
+                          </div>
+                        </div>
+
+                        <div className="course-col course-col--remove">
+                          <button
+                            type="button"
+                            className="course-remove-btn"
+                            onClick={() => removeCourse(course.id)}
+                            aria-label={`Remove ${course.name || 'course'}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <button type="button" className="add-course-btn" onClick={addCourse}>
+                  <img src="/assets/gpa-calculator/plus.svg" alt="" width="20" height="20" aria-hidden="true" />
+                  <span>Add course</span>
+                </button>
+              </>
+            )}
+
+            {/* ── Percentage panel ── */}
+            {system === 'pct' && (
+              <PercentagePanel
+                pct={pct}
+                cutoff={cutoff}
+                onPctChange={setPct}
+                onCutoffChange={setCutoff}
+              />
+            )}
+
+            {/* ── Letter panel ── */}
+            {system === 'letter' && (
+              <LetterPanel
+                letter={letter}
+                modifier={modifier}
+                onLetterChange={setLetter}
+                onModifierChange={setModifier}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* CTA band */}
+        <div className="active-cta-band">
+          <div className="active-cta-band__text">
+            <p className="active-cta-band__heading">Find the colleges that fit your GPA</p>
+            <p className="active-cta-band__sub">Join 300,000+ students on Kollegio — completely free</p>
+          </div>
+          <img
+            src="/assets/gpa-calculator/cta-band-illustration.svg"
+            alt=""
+            width="237"
+            height="123"
+            className="active-cta-band__illustration"
+            aria-hidden="true"
+          />
+          <a href="https://kollegio.ai/join" className="active-cta-band__btn">
+            Get started free
+            <ArrowRight size={18} />
+          </a>
+        </div>
+
+      </div>
+    </div>
+  )
+}

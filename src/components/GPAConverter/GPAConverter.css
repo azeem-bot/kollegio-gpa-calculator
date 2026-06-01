@@ -1,0 +1,328 @@
+/* Page shell */
+.gpa-page {
+  min-height: 100vh;
+  background: var(--k-base);
+  padding: 48px 16px 80px;
+}
+
+.gpa-page__wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.gpa-page__header {
+  margin-bottom: 28px;
+}
+
+.gpa-page__title {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--content-primary);
+  margin: 0 0 8px;
+}
+
+.gpa-page__subtitle {
+  font-size: 15px;
+  color: var(--content-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Card */
+.gpa-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-primary);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(19, 38, 25, 0.06);
+}
+
+/* FROM zone */
+.gpa-card__from {
+  padding: 24px 24px 20px;
+  background: var(--bg-white);
+}
+
+.gpa-card__zone-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--content-secondary);
+  margin-bottom: 10px;
+}
+
+.gpa-card__from-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gpa-card__pill-wrap {
+  position: relative;
+}
+
+.gpa-card__grade-summary {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--content-secondary);
+  background: var(--k-base);
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+
+.gpa-card__intl-placeholder {
+  margin-top: 16px;
+  padding: 20px;
+  background: var(--k-base);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--content-secondary);
+  font-style: italic;
+}
+
+/* System pill */
+.system-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1.5px solid var(--content-primary);
+  border-radius: 99px;
+  background: var(--bg-white);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--content-primary);
+  transition: background 0.15s;
+}
+
+.system-pill:hover,
+.system-pill--open {
+  background: var(--k-base);
+}
+
+.system-pill__chevron {
+  transition: transform 0.2s;
+}
+
+.system-pill--open .system-pill__chevron {
+  transform: rotate(180deg);
+}
+
+/* OUTPUT zone */
+.output-zone {
+  padding: 20px 24px;
+  background: var(--k-cream);
+  border-top: 1px solid var(--k-cream-dark);
+}
+
+.output-zone__label-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.output-zone__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--content-secondary);
+}
+
+.output-zone__scale-pill {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--k-dark);
+  background: var(--k-cream-dark);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.output-zone__gpa-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.output-zone__gpa {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: rgba(19, 38, 25, 0.2);
+  line-height: 1;
+  transition: color 0.2s;
+  letter-spacing: -0.02em;
+}
+
+.output-zone__gpa--filled {
+  color: var(--content-primary);
+}
+
+.output-zone__approx {
+  font-size: 13px;
+  color: var(--content-secondary);
+  font-style: italic;
+}
+
+.output-zone__hint {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--content-secondary);
+  line-height: 1.4;
+}
+
+/* Dual GPA columns (AP course-table mode) */
+.output-zone--dual {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.output-zone__col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 28px;
+  flex: 1;
+}
+
+.output-zone__col-divider {
+  width: 0.5px;
+  background: var(--k-cream-dark);
+  align-self: stretch;
+  margin: 16px 0;
+}
+
+.output-zone__col-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--content-secondary);
+}
+
+.output-zone__col-gpa {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--k-dark);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.output-zone__col-note {
+  font-size: 11px;
+  color: var(--k-green);
+  font-weight: 600;
+}
+
+/* CTA zone */
+.cta-zone {
+  padding: 16px 24px;
+  background: var(--bg-white);
+  border-top: 1px solid var(--k-cream-dark);
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 12px;
+  background: var(--k-dark);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  transition: opacity 0.15s, background 0.15s;
+  cursor: pointer;
+}
+
+.cta-btn:hover:not(.cta-btn--disabled) {
+  background: #1a3320;
+}
+
+.cta-btn--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Trust strip */
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(19, 38, 25, 0.1);
+  padding: 16px 8px;
+}
+
+.trust-strip__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+}
+
+.trust-strip__item:not(:last-child) {
+  border-right: 1px solid rgba(19, 38, 25, 0.1);
+}
+
+.trust-strip__icon {
+  color: var(--k-green);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.trust-strip__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--content-primary);
+  margin-bottom: 2px;
+}
+
+.trust-strip__body {
+  font-size: 11px;
+  color: var(--content-secondary);
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+  .gpa-page {
+    padding: 24px 12px 60px;
+  }
+
+  .gpa-page__title {
+    font-size: 26px;
+  }
+
+  .gpa-card__from,
+  .output-zone,
+  .cta-zone {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .trust-strip {
+    grid-template-columns: 1fr;
+    padding: 8px 0;
+  }
+
+  .trust-strip__item:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid rgba(19, 38, 25, 0.1);
+  }
+
+  .output-zone__gpa {
+    font-size: 40px;
+  }
+}

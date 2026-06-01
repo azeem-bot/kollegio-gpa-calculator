@@ -1,0 +1,56 @@
+.letter-panel {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.letter-panel__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.letter-panel__row-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--content-secondary);
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.letter-panel__btns {
+  display: flex;
+  gap: 6px;
+}
+
+.letter-panel__btn {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--border-primary);
+  border-radius: 10px;
+  background: var(--bg-white);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--content-primary);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.letter-panel__btn:hover:not(.letter-panel__btn--disabled) {
+  border-color: var(--content-primary);
+}
+
+.letter-panel__btn--active {
+  border-color: var(--k-dark);
+  background: var(--k-dark);
+  color: #fff;
+}
+
+.letter-panel__btn--disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "brainstormer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "5175"],
+      "cwd": ".",
+      "port": 5175
+    },
+    {
+      "name": "kollegio-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": ".",
+      "port": 5173
+    }
+  ]
+}

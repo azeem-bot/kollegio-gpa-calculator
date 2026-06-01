@@ -28,4 +28,11 @@
   --bg-g1: #132619;
   --bg-g2: #227322;
   --bg-g3-10: rgba(119, 204, 91, 0.1);
+
+  /* GPA Converter tokens */
+  --k-dark: #132619;
+  --k-green: #227322;
+  --k-cream: #f2efe5;
+  --k-cream-dark: #e8e4d8;
+  --k-base: #f9f7f2;
 }
