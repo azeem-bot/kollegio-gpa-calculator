@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { Course, Letter, Modifier, Cutoff } from '../../components/GPAConverter/types'
+import type { Course, Cutoff } from '../../components/GPAConverter/types'
 import { GRADE_OPTIONS } from '../../components/GPAConverter/types'
 import { GP, WEIGHT } from '../../components/GPAConverter/calcGPA'
 import PercentagePanel from '../../components/GPAConverter/PercentagePanel'
@@ -67,24 +67,18 @@ function calcPctGPA(pct: string, cutoff: Cutoff): number | null {
   return 0.0
 }
 
-function calcLetterGPA(letter: Letter, modifier: Modifier): number | null {
-  const key = modifier === 'none' ? letter : letter + modifier
-  const gpa = GP[key]
-  return gpa !== undefined ? gpa : null
-}
-
 // ─── Heading copy per system ───────────────────────────────────────────────────
 
 const HEADING: Record<CalcSystem, string> = {
   ap:     'Add your courses',
   pct:    'Enter your percentage',
-  letter: 'Enter your letter grade',
+  letter: 'Add your subjects',
 }
 
 const SUBHEADING: Record<CalcSystem, string> = {
   ap:     "Enter each class, its type, credit and your grade.\nWe'll calculate your weighted and unweighted GPA.",
   pct:    "Enter your percentage score and select your school's cutoff standard.\nWe'll convert it to an unweighted 4.0 GPA.",
-  letter: "Select your letter grade and modifier.\nWe'll convert it to an unweighted 4.0 GPA.",
+  letter: "Enter each subject and your grade.\nWe'll calculate your cumulative GPA.",
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -108,9 +102,8 @@ export default function ActiveState({ initialSystem }: Props) {
   const [pct,    setPct]    = useState('')
   const [cutoff, setCutoff] = useState<Cutoff>('standard')
 
-  // Letter panel
-  const [letter,   setLetter]   = useState<Letter>('A')
-  const [modifier, setModifier] = useState<Modifier>('none')
+  // Letter panel — GPA propagated up via callback
+  const [letterGPA, setLetterGPA] = useState<number | null>(null)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -135,7 +128,7 @@ export default function ActiveState({ initialSystem }: Props) {
   } else if (system === 'pct') {
     gpaUnweighted = calcPctGPA(pct, cutoff)
   } else if (system === 'letter') {
-    gpaUnweighted = calcLetterGPA(letter, modifier)
+    gpaUnweighted = letterGPA
   }
 
   // ─── System switching ────────────────────────────────────────────────────────
@@ -232,32 +225,49 @@ export default function ActiveState({ initialSystem }: Props) {
 
           {/* Left: output card */}
           <div className="output-card">
-            <div className="output-card__top-row">
-              <img src="/assets/gpa-calculator/bank-icon.svg" alt="" width="24" height="24" aria-hidden="true" />
-              <span className="output-card__top-label">Colleges use unweighted GPA</span>
-            </div>
+            {system === 'letter' ? (
+              <>
+                <span className="output-card__top-label">Your cumulative GPA</span>
+                <div className="output-card__section">
+                  <div className="output-card__gpa-row">
+                    <span className="output-card__value">
+                      {gpaUnweighted !== null ? gpaUnweighted.toFixed(1) : '—'}
+                    </span>
+                    <span className="output-card__scale">/4.0</span>
+                  </div>
+                  <p className="output-card__label">Cumulative GPA</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="output-card__top-row">
+                  <img src="/assets/gpa-calculator/bank-icon.svg" alt="" width="24" height="24" aria-hidden="true" />
+                  <span className="output-card__top-label">Colleges use unweighted GPA</span>
+                </div>
 
-            <div className="output-card__section">
-              <div className="output-card__gpa-row">
-                <span className="output-card__value">
-                  {gpaUnweighted !== null ? gpaUnweighted.toFixed(1) : '—'}
-                </span>
-                <span className="output-card__scale">/4.0</span>
-              </div>
-              <p className="output-card__label">Unweighted GPA</p>
-            </div>
+                <div className="output-card__section">
+                  <div className="output-card__gpa-row">
+                    <span className="output-card__value">
+                      {gpaUnweighted !== null ? gpaUnweighted.toFixed(1) : '—'}
+                    </span>
+                    <span className="output-card__scale">/4.0</span>
+                  </div>
+                  <p className="output-card__label">Unweighted GPA</p>
+                </div>
 
-            <div className="output-card__divider" />
+                <div className="output-card__divider" />
 
-            <div className="output-card__section">
-              <div className="output-card__gpa-row">
-                <span className="output-card__value">
-                  {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : '—'}
-                </span>
-                <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
-              </div>
-              <p className="output-card__label">Weighted GPA</p>
-            </div>
+                <div className="output-card__section">
+                  <div className="output-card__gpa-row">
+                    <span className="output-card__value">
+                      {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : '—'}
+                    </span>
+                    <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
+                  </div>
+                  <p className="output-card__label">Weighted GPA</p>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Right: white input card — heading/subtitle now live INSIDE */}
@@ -383,12 +393,7 @@ export default function ActiveState({ initialSystem }: Props) {
 
             {/* ── Letter panel ── */}
             {system === 'letter' && (
-              <LetterPanel
-                letter={letter}
-                modifier={modifier}
-                onLetterChange={setLetter}
-                onModifierChange={setModifier}
-              />
+              <LetterPanel onGPAChange={setLetterGPA} />
             )}
           </div>
         </div>
