@@ -6,7 +6,7 @@ import { GP, WEIGHT } from '../../components/GPAConverter/calcGPA'
 import PercentagePanel from '../../components/GPAConverter/PercentagePanel'
 import LetterPanel from '../../components/GPAConverter/LetterPanel'
 import CollegeCards from './CollegeCards'
-import { ChevronDown, ChevronUp, ArrowRight } from './Icons'
+import { ChevronDown, ArrowRight } from './Icons'
 import './ActiveState.css'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
