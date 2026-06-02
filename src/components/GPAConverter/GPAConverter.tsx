@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import type { ConverterState, Course, Letter, Modifier, WeightedScale, Cutoff, System } from './types'
+import type { ConverterState, Course, WeightedScale, Cutoff, System } from './types'
 import { SYSTEM_ROUTES } from './types'
 import { calcGPA, getSystemFromPath } from './calcGPA'
 import SystemPill from './SystemPill'
@@ -41,6 +41,7 @@ export default function GPAConverter() {
 
   const [state, setState] = useState<ConverterState>(DEFAULT_STATE)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [letterGPA, setLetterGPA] = useState<number | null>(null)
   const pillRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -157,12 +158,7 @@ export default function GPAConverter() {
             )}
 
             {system === 'letter' && (
-              <LetterPanel
-                letter={state.letter}
-                modifier={state.modifier}
-                onLetterChange={l => setState(s => ({ ...s, letter: l as Letter }))}
-                onModifierChange={m => setState(s => ({ ...s, modifier: m as Modifier }))}
-              />
+              <LetterPanel onGPAChange={setLetterGPA} />
             )}
 
             {system === 'intl' && (
