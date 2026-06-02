@@ -15,7 +15,7 @@ export type CalcSystem = 'ap' | 'pct' | 'letter'
 const SYSTEM_ROUTES: Record<CalcSystem, string> = {
   ap:     '/gpa-converter/ap-gpa-calculator',
   pct:    '/gpa-converter/percentage-to-gpa',
-  letter: '/gpa-converter/letter-grade-to-gpa',
+  letter: '/gpa-converter/subject-grades-to-gpa',
 }
 
 const SYSTEM_LABELS: Record<CalcSystem, string> = {

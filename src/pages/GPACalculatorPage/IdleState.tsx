@@ -22,22 +22,22 @@ const CARDS: CardDef[] = [
     illustrationStyle: { width: 237, height: 279, left: 154, top: 173 },
   },
   {
+    id: 'letter',
+    title: 'Standard Subjects',
+    subtitle: 'I need to convert my subject grades to GPA',
+    illustration: '/assets/illustrations/letter-grades.svg',
+    illustrationAlt: 'Letter grades illustration',
+    bgColor: 'rgba(69, 136, 229, 0.1)',
+    illustrationStyle: { width: 251, height: 251, left: 136, top: 160 },
+  },
+  {
     id: 'pct',
-    title: 'Percentage grade',
+    title: 'Percentage grades',
     subtitle: 'My school gives grades like 75% or 94%',
     illustration: '/assets/illustrations/percentage-grade.svg',
     illustrationAlt: 'Percentage grade illustration',
     bgColor: 'rgba(255, 187, 51, 0.1)',
     illustrationStyle: { width: 244, height: 244, left: 165, top: 192 },
-  },
-  {
-    id: 'letter',
-    title: 'Letter grades',
-    subtitle: 'My transcript shows A, B+, C, etc.',
-    illustration: '/assets/illustrations/letter-grades.svg',
-    illustrationAlt: 'Letter grades illustration',
-    bgColor: 'rgba(69, 136, 229, 0.1)',
-    illustrationStyle: { width: 251, height: 251, left: 136, top: 160 },
   },
 ]
 

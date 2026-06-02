@@ -8,16 +8,17 @@ import CalcFooter from './CalcFooter'
 import './GPACalculatorPage.css'
 
 function getSystemFromPath(path: string): CalcSystem | null {
-  if (path.includes('ap-gpa-calculator'))  return 'ap'
-  if (path.includes('percentage-to-gpa'))  return 'pct'
-  if (path.includes('letter-grade-to-gpa')) return 'letter'
+  if (path.includes('ap-gpa-calculator'))    return 'ap'
+  if (path.includes('percentage-to-gpa'))    return 'pct'
+  if (path.includes('subject-grades-to-gpa')) return 'letter'
+  if (path.includes('letter-grade-to-gpa'))  return 'letter'
   return null
 }
 
 const SYSTEM_ROUTES: Record<CalcSystem, string> = {
   ap:     '/gpa-converter/ap-gpa-calculator',
   pct:    '/gpa-converter/percentage-to-gpa',
-  letter: '/gpa-converter/letter-grade-to-gpa',
+  letter: '/gpa-converter/subject-grades-to-gpa',
 }
 
 export default function GPACalculatorPage() {
