@@ -270,15 +270,19 @@ export default function ActiveState({ initialSystem }: Props) {
             )}
           </div>
 
-          {/* Right: white input card — heading/subtitle now live INSIDE */}
+          {/* Right: white input card */}
           <div className="input-card">
-            {/* Fix 1: heading and subtitle inside the card */}
-            <h2 className="input-card__heading">{HEADING[system]}</h2>
-            <p className="input-card__subheading">
-              {SUBHEADING[system].split('\n').map((line, i) => (
-                <span key={i}>{line}{i === 0 && <br />}</span>
-              ))}
-            </p>
+            {/* Letter panel renders its own heading, subtitle, and switch internally */}
+            {system !== 'letter' && (
+              <>
+                <h2 className="input-card__heading">{HEADING[system]}</h2>
+                <p className="input-card__subheading">
+                  {SUBHEADING[system].split('\n').map((line, i) => (
+                    <span key={i}>{line}{i === 0 && <br />}</span>
+                  ))}
+                </p>
+              </>
+            )}
 
             {/* ── AP: course table ── */}
             {system === 'ap' && (

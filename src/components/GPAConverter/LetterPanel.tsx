@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronDown } from '../../pages/GPACalculatorPage/Icons'
 import './LetterPanel.css'
 
@@ -45,10 +45,26 @@ let nextSubjectId = 1
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function LetterPanel({ onGPAChange }: Props) {
-  const [subjects,  setSubjects]  = useState<Subject[]>([])
+  // One empty row on load
+  const [subjects, setSubjects] = useState<Subject[]>(() => [
+    { id: nextSubjectId++, name: '', credits: 1.0, grade: 'A' },
+  ])
   const [gradeMode, setGradeMode] = useState<GradeMode>('letter')
 
-  // Recalculate and propagate GPA whenever subjects or mode change
+  // Sliding pill — measure active pill after each mode change
+  const pillRef  = useRef<HTMLDivElement>(null)
+  const [pillLeft, setPillLeft] = useState('3px')
+
+  useEffect(() => {
+    if (gradeMode === 'letter') {
+      setPillLeft('3px')
+    } else if (pillRef.current) {
+      // Container clientWidth = 156px (158px − 2px borders)
+      setPillLeft(`${156 - pillRef.current.offsetWidth - 3}px`)
+    }
+  }, [gradeMode])
+
+  // GPA calculation
   useEffect(() => {
     const valid = subjects.filter(s => {
       if (gradeMode === 'letter') return GP[s.grade] !== undefined
@@ -74,13 +90,12 @@ export default function LetterPanel({ onGPAChange }: Props) {
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
-  const handleGradeModeChange = (mode: GradeMode) => {
-    if (mode === gradeMode) return
-    setGradeMode(mode)
-    // Reset grades to the default for the new mode
+  const toggleGradeMode = () => {
+    const next: GradeMode = gradeMode === 'letter' ? 'pct' : 'letter'
+    setGradeMode(next)
     setSubjects(prev => prev.map(s => ({
       ...s,
-      grade: mode === 'letter' ? 'A' : '',
+      grade: next === 'letter' ? 'A' : '',
     })))
   }
 
@@ -107,123 +122,129 @@ export default function LetterPanel({ onGPAChange }: Props) {
   return (
     <div className="letter-panel">
 
-      {/* Grade mode toggle */}
-      <div className="grade-mode-toggle">
-        <button
-          type="button"
-          className={`grade-mode-toggle__pill${gradeMode === 'letter' ? ' grade-mode-toggle__pill--active' : ''}`}
-          onClick={() => handleGradeModeChange('letter')}
-        >
-          Letter grade
-        </button>
-        <button
-          type="button"
-          className={`grade-mode-toggle__pill${gradeMode === 'pct' ? ' grade-mode-toggle__pill--active' : ''}`}
-          onClick={() => handleGradeModeChange('pct')}
-        >
-          Percentage
-        </button>
-      </div>
-
-      {/* Table header */}
-      <div className="subj-table__head">
-        <span className="subj-col subj-col--name">Subject name</span>
-        <span className="subj-col subj-col--credits">
-          Credits <span className="subj-col__optional">(optional)</span>
-        </span>
-        <span className="subj-col subj-col--grade">Grade</span>
-        <span className="subj-col subj-col--remove" />
-      </div>
-
-      {/* Table body */}
-      {subjects.length === 0 ? (
-        <p className="subj-table__empty">
-          No subjects yet — add your first subject below.
-        </p>
-      ) : (
-        <div className="subj-table__body">
-          {subjects.map(subj => (
-            <div key={subj.id} className="subj-row">
-
-              {/* Subject name */}
-              <div className="subj-col subj-col--name">
-                <input
-                  type="text"
-                  className="course-input"
-                  value={subj.name}
-                  placeholder="Subject name"
-                  onChange={e => updateSubject(subj.id, 'name', e.target.value)}
-                  aria-label="Subject name"
-                />
-              </div>
-
-              {/* Credits */}
-              <div className="subj-col subj-col--credits">
-                <div className="course-select-wrap">
-                  <select
-                    className="course-select"
-                    value={subj.credits.toFixed(1)}
-                    onChange={e => updateSubject(subj.id, 'credits', e.target.value)}
-                    aria-label="Credits"
-                  >
-                    {CREDIT_OPTIONS.map(v => (
-                      <option key={v} value={v}>{v}</option>
-                    ))}
-                  </select>
-                  <ChevronDown size={24} className="course-select__chevron" />
-                </div>
-              </div>
-
-              {/* Grade — select or number input depending on mode */}
-              <div className="subj-col subj-col--grade">
-                {gradeMode === 'letter' ? (
-                  <div className="course-select-wrap">
-                    <select
-                      className="course-select"
-                      value={subj.grade}
-                      onChange={e => updateSubject(subj.id, 'grade', e.target.value)}
-                      aria-label="Grade"
-                    >
-                      {LETTER_OPTIONS.map(g => (
-                        <option key={g} value={g}>{g}</option>
-                      ))}
-                    </select>
-                    <ChevronDown size={24} className="course-select__chevron" />
-                  </div>
-                ) : (
-                  <input
-                    type="number"
-                    className="course-input"
-                    value={subj.grade}
-                    placeholder="e.g. 91"
-                    min={0}
-                    max={100}
-                    onChange={e => updateSubject(subj.id, 'grade', e.target.value)}
-                    aria-label="Percentage grade"
-                  />
-                )}
-              </div>
-
-              {/* Remove */}
-              <div className="subj-col subj-col--remove">
-                <button
-                  type="button"
-                  className="course-remove-btn"
-                  onClick={() => removeSubject(subj.id)}
-                  aria-label={`Remove ${subj.name || 'subject'}`}
-                >
-                  ×
-                </button>
-              </div>
-
-            </div>
-          ))}
+      {/* ── Header: heading + subtitle | switch ─────────────────────────── */}
+      <div className="letter-panel__header">
+        <div className="letter-panel__header-text">
+          <h2 className="letter-panel__heading">Add your subjects</h2>
+          <p className="letter-panel__subtitle">
+            Enter each class, credit and your grade.{' '}
+            We'll calculate your weighted and unweighted GPA.
+          </p>
         </div>
-      )}
 
+        {/* Grade mode switch */}
+        <div
+          className="grade-switch"
+          role="switch"
+          aria-checked={gradeMode === 'pct'}
+          tabIndex={0}
+          onClick={toggleGradeMode}
+          onKeyDown={e => {
+            if (e.key === ' ' || e.key === 'Enter') {
+              e.preventDefault()
+              toggleGradeMode()
+            }
+          }}
+        >
+          <div
+            ref={pillRef}
+            className="grade-switch__pill"
+            style={{ left: pillLeft }}
+            aria-hidden="true"
+          >
+            {gradeMode === 'letter' ? 'Grades' : 'Percentages'}
+          </div>
+          <span
+            className={`grade-switch__inactive grade-switch__inactive--${gradeMode === 'letter' ? 'right' : 'left'}`}
+            aria-hidden="true"
+          >
+            {gradeMode === 'letter' ? 'Percentages' : 'Grades'}
+          </span>
+        </div>
+      </div>
+
+      {/* ── Column headers ──────────────────────────────────────────────── */}
+      <div className="letter-row letter-row--head">
+        <span className="letter-col__label letter-col__label--muted">Course name</span>
+        <span className="letter-col__label">Credits</span>
+        <span className="letter-col__label">Grades</span>
+        <span />
+      </div>
+
+      {/* ── Data rows ───────────────────────────────────────────────────── */}
+      {subjects.map(subj => (
+        <div key={subj.id} className="letter-row">
+
+          {/* Course name */}
+          <input
+            type="text"
+            className="course-input"
+            value={subj.name}
+            placeholder="Course"
+            onChange={e => updateSubject(subj.id, 'name', e.target.value)}
+            aria-label="Course name"
+          />
+
+          {/* Credits */}
+          <div className="course-select-wrap">
+            <select
+              className="course-select"
+              value={subj.credits.toFixed(1)}
+              onChange={e => updateSubject(subj.id, 'credits', e.target.value)}
+              aria-label="Credits"
+            >
+              {CREDIT_OPTIONS.map(v => (
+                <option key={v} value={v}>{v}</option>
+              ))}
+            </select>
+            <ChevronDown size={24} className="course-select__chevron" />
+          </div>
+
+          {/* Grade */}
+          {gradeMode === 'letter' ? (
+            <div className="course-select-wrap">
+              <select
+                className="course-select"
+                value={subj.grade}
+                onChange={e => updateSubject(subj.id, 'grade', e.target.value)}
+                aria-label="Grade"
+              >
+                {LETTER_OPTIONS.map(g => (
+                  <option key={g} value={g}>{g}</option>
+                ))}
+              </select>
+              <ChevronDown size={24} className="course-select__chevron" />
+            </div>
+          ) : (
+            <input
+              type="number"
+              className="course-input"
+              value={subj.grade}
+              placeholder="e.g. 91"
+              min={0}
+              max={100}
+              onChange={e => updateSubject(subj.id, 'grade', e.target.value)}
+              aria-label="Percentage grade"
+            />
+          )}
+
+          {/* Remove */}
+          <button
+            type="button"
+            className="course-remove-btn"
+            onClick={() => removeSubject(subj.id)}
+            aria-label={`Remove ${subj.name || 'course'}`}
+          >
+            ×
+          </button>
+
+        </div>
+      ))}
+
+      {/* ── Add course ──────────────────────────────────────────────────── */}
       <button type="button" className="add-course-btn" onClick={addSubject}>
         <img src="/assets/gpa-calculator/plus.svg" alt="" width="20" height="20" aria-hidden="true" />
-        <span>Add subject</span>
+        <span>Add course</span>
       </button>
 
     </div>

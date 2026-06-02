@@ -206,6 +206,14 @@
   gap: 12px;
 }
 
+/* Heading row — heading text + optional inline control (e.g. grade switch) */
+.input-card__heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 /* Fix 1: heading/subtitle now live inside the card */
 .input-card__heading {
   font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
