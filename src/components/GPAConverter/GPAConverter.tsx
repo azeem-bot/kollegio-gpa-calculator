@@ -41,7 +41,6 @@ export default function GPAConverter() {
 
   const [state, setState] = useState<ConverterState>(DEFAULT_STATE)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [letterGPA, setLetterGPA] = useState<number | null>(null)
   const pillRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -158,7 +157,7 @@ export default function GPAConverter() {
             )}
 
             {system === 'letter' && (
-              <LetterPanel onGPAChange={setLetterGPA} />
+              <LetterPanel onGPAChange={() => {}} />
             )}
 
             {system === 'intl' && (
