@@ -10,50 +10,61 @@
   padding: 0 25px;
 }
 
-/* ── Fix 2: "Your grading system" row — floats above the white card ────────── */
+/* ── Header row — "Your grading system" + system selector ──────────────────── */
 .grading-system-row {
-  /* Offset to the right, aligned above the input card (output card = 374px + 16px gap) */
-  margin-left: calc(374px + 16px);
-  padding: 40px 0 10px;
+  padding: 40px 0 16px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(19, 38, 25, 0.3);
 }
 
 .grading-system-row__label {
   font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   color: #132619;
-  line-height: 1.1;
+  line-height: 1;
+  white-space: nowrap;
+  margin: 0;
 }
 
-/* System chip + dropdown wrapper */
+/* System selector — flat text + chevron */
 .system-chip-wrap {
   position: relative;
   flex-shrink: 0;
 }
 
-.input-card__system-chip {
+.system-selector {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: #227322;
+  gap: 8px;
+  background: none;
   border: none;
-  border-radius: 60px;
-  padding: 8px 12px;
-  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #f2efe5;
-  line-height: 1.2;
-  white-space: nowrap;
+  padding: 0;
   cursor: pointer;
-  transition: background 0.15s;
+  outline: none;
 }
 
-.input-card__system-chip:hover {
-  background: #1b5c1b;
+.system-selector:focus-visible {
+  outline: 2px solid #227322;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.system-selector__name {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: rgba(19, 38, 25, 0.65);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.system-selector__chevron {
+  color: rgba(19, 38, 25, 0.65);
+  flex-shrink: 0;
 }
 
 /* System dropdown */
@@ -118,7 +129,7 @@
 /* ── Fix 5: Two-column grid — output card top-aligns with input card ─────── */
 .active-state__cols {
   display: grid;
-  grid-template-columns: 374px 1fr;
+  grid-template-columns: 1fr 374px;
   column-gap: 16px;
   align-items: start;
 }
@@ -126,13 +137,19 @@
 /* ── Left: output card ────────────────────────────────────────────────────── */
 .output-card {
   width: 374px;
-  min-height: 436px;
+  min-height: 409px;
   background: #227322;
   border-radius: 8px;
   border: 1px solid rgba(19, 38, 25, 0.3);
   padding: 23px;
   box-sizing: border-box;
   flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+/* Pre-calculation: muted green */
+.output-card--pre {
+  background: rgba(34, 115, 34, 0.1);
 }
 
 .output-card__top-row {
@@ -143,11 +160,24 @@
 
 .output-card__top-label {
   font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #f2efe5;
   line-height: 1.1;
-  max-width: 200px;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.output-card--pre .output-card__top-label {
+  color: rgba(19, 38, 25, 0.65);
+}
+
+.output-card__top-icon {
+  transition: filter 0.3s ease;
+}
+
+.output-card--pre .output-card__top-icon {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(2221%) hue-rotate(93deg) brightness(95%) contrast(86%) opacity(0.65);
 }
 
 .output-card__section {
@@ -171,6 +201,13 @@
   color: #f2efe5;
   letter-spacing: -1.28px;
   line-height: 0.9;
+  transition: color 0.3s ease, font-size 0.3s ease;
+}
+
+.output-card--pre .output-card__value {
+  font-size: 48px;
+  letter-spacing: -0.96px;
+  color: rgba(19, 38, 25, 0.65);
 }
 
 .output-card__scale {
@@ -179,6 +216,11 @@
   font-weight: 700;
   color: #f2efe5;
   line-height: 1.1;
+  transition: color 0.3s ease;
+}
+
+.output-card--pre .output-card__scale {
+  color: rgba(19, 38, 25, 0.65);
 }
 
 .output-card__label {
@@ -187,22 +229,55 @@
   font-weight: 700;
   color: #f2efe5;
   margin: 8px 0 0;
+  transition: color 0.3s ease;
+}
+
+.output-card--pre .output-card__label {
+  color: rgba(19, 38, 25, 0.65);
+}
+
+.output-card__formula-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.output-card__formula-label {
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.output-card--pre .output-card__formula-label {
+  color: rgba(19, 38, 25, 0.35);
 }
 
 .output-card__formula {
-  display: block;
   font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.2;
-  margin-top: 8px;
+  transition: color 0.3s ease;
+}
+
+.output-card--pre .output-card__formula {
+  color: rgba(19, 38, 25, 0.45);
 }
 
 .output-card__divider {
   height: 1px;
   background: rgba(249, 247, 242, 0.3);
   margin-top: 24px;
+  transition: background 0.3s ease;
+}
+
+.output-card--pre .output-card__divider {
+  background: rgba(19, 38, 25, 0.3);
 }
 
 /* ── Right: white input card — heading/subtitle inside ────────────────────── */
@@ -227,7 +302,7 @@
 /* Fix 1: heading/subtitle now live inside the card */
 .input-card__heading {
   font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: #132619;
   letter-spacing: -0.64px;
@@ -242,6 +317,7 @@
   color: rgba(19, 38, 25, 0.65);
   margin: 0;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 /* Fix 3: column header grid — flex-1 name, fixed type/credits/grade */
@@ -471,10 +547,7 @@
 /* ── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .active-state__cols {
-    grid-template-columns: 320px 1fr;
-  }
-  .grading-system-row {
-    margin-left: calc(320px + 16px);
+    grid-template-columns: 1fr 320px;
   }
   .output-card {
     width: 320px;
@@ -490,7 +563,6 @@
     grid-template-columns: 1fr;
   }
   .grading-system-row {
-    margin-left: 0;
     padding-top: 24px;
   }
   .output-card {

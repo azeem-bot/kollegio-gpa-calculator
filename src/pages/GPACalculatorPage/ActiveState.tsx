@@ -5,6 +5,7 @@ import { GRADE_OPTIONS } from '../../components/GPAConverter/types'
 import { GP, WEIGHT } from '../../components/GPAConverter/calcGPA'
 import PercentagePanel from '../../components/GPAConverter/PercentagePanel'
 import LetterPanel from '../../components/GPAConverter/LetterPanel'
+import CollegeCards from './CollegeCards'
 import { ChevronDown, ChevronUp, ArrowRight } from './Icons'
 import './ActiveState.css'
 
@@ -170,25 +171,26 @@ export default function ActiveState({ initialSystem }: Props) {
   // ─── Render ──────────────────────────────────────────────────────────────────
 
   const showWeighted = system === 'ap'
+  const hasGPA = gpaUnweighted !== null
 
   return (
     <div className="active-state">
       <div className="active-state__inner">
 
-        {/* ── Fix 2: "Your grading system" row floats ABOVE the white card ── */}
+        {/* Header row — "Your grading system" + system selector */}
         <div className="grading-system-row">
-          <span className="grading-system-row__label">Your grading system</span>
+          <h1 className="grading-system-row__label">Your grading system</h1>
 
           <div className="system-chip-wrap" ref={dropdownRef}>
             <button
               type="button"
-              className={`input-card__system-chip${dropdownOpen ? ' input-card__system-chip--open' : ''}`}
+              className="system-selector"
               onClick={() => setDropdownOpen(o => !o)}
               aria-haspopup="listbox"
               aria-expanded={dropdownOpen}
             >
-              <span>{SYSTEM_LABELS[system]}</span>
-              {dropdownOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              <span className="system-selector__name">{SYSTEM_LABELS[system]}</span>
+              <ChevronDown size={24} className="system-selector__chevron" />
             </button>
 
             {dropdownOpen && (
@@ -220,81 +222,17 @@ export default function ActiveState({ initialSystem }: Props) {
           </div>
         </div>
 
-        {/* ── Fix 1 + 5: Two-column grid — output card aligns to top of input card ── */}
+        {/* Two-column grid — input card left, output card right */}
         <div className="active-state__cols">
 
-          {/* Left: output card */}
-          <div className="output-card">
-            {system === 'letter' ? (
-              <>
-                <span className="output-card__top-label">Your cumulative GPA</span>
-                <div className="output-card__section">
-                  <div className="output-card__gpa-row">
-                    <span className="output-card__value">
-                      {gpaUnweighted !== null ? gpaUnweighted.toFixed(1) : '—'}
-                    </span>
-                    <span className="output-card__scale">/4.0</span>
-                  </div>
-                  <p className="output-card__label">Cumulative GPA</p>
-                  {gpaUnweighted !== null && (
-                    <span className="output-card__formula">
-                      Σ(grade pts × credits) ÷ Σ(credits)
-                    </span>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="output-card__top-row">
-                  <img src="/assets/gpa-calculator/bank-icon.svg" alt="" width="24" height="24" aria-hidden="true" />
-                  <span className="output-card__top-label">Colleges use unweighted GPA</span>
-                </div>
-
-                <div className="output-card__section">
-                  <div className="output-card__gpa-row">
-                    <span className="output-card__value">
-                      {gpaUnweighted !== null ? gpaUnweighted.toFixed(1) : '—'}
-                    </span>
-                    <span className="output-card__scale">/4.0</span>
-                  </div>
-                  <p className="output-card__label">Unweighted GPA</p>
-                  {gpaUnweighted !== null && (
-                    <span className="output-card__formula">
-                      Σ(grade pts × credits) ÷ Σ(credits)
-                    </span>
-                  )}
-                </div>
-
-                <div className="output-card__divider" />
-
-                <div className="output-card__section">
-                  <div className="output-card__gpa-row">
-                    <span className="output-card__value">
-                      {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : '—'}
-                    </span>
-                    <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
-                  </div>
-                  <p className="output-card__label">Weighted GPA</p>
-                  {showWeighted && gpaWeighted !== null && (
-                    <span className="output-card__formula">
-                      Σ((grade pts + type bonus) × credits) ÷ Σ(credits)
-                    </span>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Right: white input card */}
+          {/* Left: white input card */}
           <div className="input-card">
             {/* Letter panel renders its own heading, subtitle, and switch internally */}
             {system !== 'letter' && (
               <>
                 <h2 className="input-card__heading">{HEADING[system]}</h2>
                 <p className="input-card__subheading">
-                  {SUBHEADING[system].split('\n').map((line, i) => (
-                    <span key={i}>{line}{i === 0 && <br />}</span>
-                  ))}
+                  {SUBHEADING[system].replace(/\n/g, ' ')}
                 </p>
               </>
             )}
@@ -415,7 +353,78 @@ export default function ActiveState({ initialSystem }: Props) {
               <LetterPanel onGPAChange={setLetterGPA} />
             )}
           </div>
+
+          {/* Right: GPA output card — pre/post calculation states */}
+          <div className={`output-card${hasGPA ? '' : ' output-card--pre'}`}>
+            {system === 'letter' ? (
+              <>
+                <span className="output-card__top-label">Your cumulative GPA</span>
+                <div className="output-card__section">
+                  <div className="output-card__gpa-row">
+                    <span className="output-card__value">
+                      {hasGPA ? gpaUnweighted!.toFixed(1) : 'XX'}
+                    </span>
+                    <span className="output-card__scale">/4.0</span>
+                  </div>
+                  <p className="output-card__label">Cumulative GPA</p>
+                  <div className="output-card__formula-block">
+                    <span className="output-card__formula-label">Formula</span>
+                    <span className="output-card__formula">Σ(grade pts × credits) ÷ Σ(credits)</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="output-card__top-row">
+                  <img
+                    src="/assets/gpa-calculator/bank-icon.svg"
+                    alt=""
+                    width="24"
+                    height="24"
+                    aria-hidden="true"
+                    className="output-card__top-icon"
+                  />
+                  <span className="output-card__top-label">Colleges use unweighted GPA</span>
+                </div>
+
+                <div className="output-card__section">
+                  <div className="output-card__gpa-row">
+                    <span className="output-card__value">
+                      {hasGPA ? gpaUnweighted!.toFixed(1) : 'XX'}
+                    </span>
+                    <span className="output-card__scale">/4.0</span>
+                  </div>
+                  <p className="output-card__label">Unweighted GPA</p>
+                  <div className="output-card__formula-block">
+                    <span className="output-card__formula-label">Formula</span>
+                    <span className="output-card__formula">Σ(grade pts × credits) ÷ Σ(credits)</span>
+                  </div>
+                </div>
+
+                <div className="output-card__divider" />
+
+                <div className="output-card__section">
+                  <div className="output-card__gpa-row">
+                    <span className="output-card__value">
+                      {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : 'XX'}
+                    </span>
+                    <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
+                  </div>
+                  <p className="output-card__label">Weighted GPA</p>
+                  {showWeighted && (
+                    <div className="output-card__formula-block">
+                      <span className="output-card__formula-label">Formula</span>
+                      <span className="output-card__formula">Σ((grade pts + bonus) × credits) ÷ Σ(credits)</span>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
         </div>
+
+        {/* College cards — visible only when GPA is calculated */}
+        {hasGPA && <CollegeCards />}
 
         {/* CTA band */}
         <div className="active-cta-band">
