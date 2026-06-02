@@ -189,6 +189,16 @@
   margin: 8px 0 0;
 }
 
+.output-card__formula {
+  display: block;
+  font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.2;
+  margin-top: 8px;
+}
+
 .output-card__divider {
   height: 1px;
   background: rgba(249, 247, 242, 0.3);

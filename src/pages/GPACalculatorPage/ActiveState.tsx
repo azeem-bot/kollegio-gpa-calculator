@@ -236,6 +236,11 @@ export default function ActiveState({ initialSystem }: Props) {
                     <span className="output-card__scale">/4.0</span>
                   </div>
                   <p className="output-card__label">Cumulative GPA</p>
+                  {gpaUnweighted !== null && (
+                    <span className="output-card__formula">
+                      Σ(grade pts × credits) ÷ Σ(credits)
+                    </span>
+                  )}
                 </div>
               </>
             ) : (
@@ -253,6 +258,11 @@ export default function ActiveState({ initialSystem }: Props) {
                     <span className="output-card__scale">/4.0</span>
                   </div>
                   <p className="output-card__label">Unweighted GPA</p>
+                  {gpaUnweighted !== null && (
+                    <span className="output-card__formula">
+                      Σ(grade pts × credits) ÷ Σ(credits)
+                    </span>
+                  )}
                 </div>
 
                 <div className="output-card__divider" />
@@ -265,6 +275,11 @@ export default function ActiveState({ initialSystem }: Props) {
                     <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
                   </div>
                   <p className="output-card__label">Weighted GPA</p>
+                  {showWeighted && gpaWeighted !== null && (
+                    <span className="output-card__formula">
+                      Σ((grade pts + type bonus) × credits) ÷ Σ(credits)
+                    </span>
+                  )}
                 </div>
               </>
             )}
