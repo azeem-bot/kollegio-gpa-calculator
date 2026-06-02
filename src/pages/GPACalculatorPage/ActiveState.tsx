@@ -426,25 +426,27 @@ export default function ActiveState({ initialSystem }: Props) {
         {/* College cards — visible only when GPA is calculated */}
         {hasGPA && <CollegeCards />}
 
-        {/* CTA band */}
-        <div className="active-cta-band">
-          <div className="active-cta-band__text">
-            <p className="active-cta-band__heading">Find the colleges that fit your GPA</p>
-            <p className="active-cta-band__sub">Join 300,000+ students on Kollegio — completely free</p>
+        {/* CTA band — hidden when college cards are shown */}
+        {!hasGPA && (
+          <div className="active-cta-band">
+            <div className="active-cta-band__text">
+              <p className="active-cta-band__heading">Find the colleges that fit your GPA</p>
+              <p className="active-cta-band__sub">Join 300,000+ students on Kollegio — completely free</p>
+            </div>
+            <img
+              src="/assets/gpa-calculator/cta-band-illustration.svg"
+              alt=""
+              width="237"
+              height="123"
+              className="active-cta-band__illustration"
+              aria-hidden="true"
+            />
+            <a href="https://kollegio.ai/join" className="active-cta-band__btn">
+              Get started free
+              <ArrowRight size={18} />
+            </a>
           </div>
-          <img
-            src="/assets/gpa-calculator/cta-band-illustration.svg"
-            alt=""
-            width="237"
-            height="123"
-            className="active-cta-band__illustration"
-            aria-hidden="true"
-          />
-          <a href="https://kollegio.ai/join" className="active-cta-band__btn">
-            Get started free
-            <ArrowRight size={18} />
-          </a>
-        </div>
+        )}
 
       </div>
     </div>
