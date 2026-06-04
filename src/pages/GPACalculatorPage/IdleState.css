@@ -162,10 +162,11 @@
     margin-top: 12px;
   }
   .idle-hero__tagline {
-    font-size: 16px;
+    display: none;
   }
   .idle-hero__desc {
     font-size: 16px;
+    line-height: 1.4;
   }
 
   /* Selector → scrollable pill strip */
@@ -188,6 +189,7 @@
     border-radius: 100px;
     padding: 8px 16px;
     overflow: visible;
+    background: transparent;
   }
   .idle-selector__card--active {
     border-width: 1.5px;

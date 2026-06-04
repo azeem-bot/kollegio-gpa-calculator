@@ -551,21 +551,24 @@
   /* Stack: output card first, input card second */
   .active-state__cols {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 20px;
   }
 
   /* ── Output card: horizontal two-column layout ── */
   .output-card {
     width: 100%;
     min-height: auto;
-    padding: 20px 24px;
+    padding: 16px;
     order: -1;
   }
   .output-card__top-label {
     font-size: 13px;
   }
+  .output-card__top-row {
+    margin-bottom: 16px;
+  }
   .output-card__section {
-    margin-top: 16px;
+    margin-top: 0;
   }
   .output-card__section + .output-card__divider + .output-card__section {
     margin-top: 0;
@@ -574,9 +577,7 @@
   /* Side-by-side unweighted | divider | weighted */
   .output-card__sections-wrap {
     display: flex;
-    gap: 24px;
     align-items: flex-start;
-    margin-top: 16px;
   }
   .output-card__sections-wrap > .output-card__section {
     flex: 1;
@@ -586,12 +587,13 @@
     width: 1px;
     height: auto;
     align-self: stretch;
-    margin-top: 0;
+    margin: 0 16px;
     background: rgba(249, 247, 242, 0.3);
   }
 
   .output-card__value {
     font-size: 40px;
+    letter-spacing: -0.96px;
   }
   .output-card__label {
     font-size: 16px;
@@ -601,14 +603,17 @@
     display: none;
   }
 
-  /* ── Input card ── */
+  /* ── Input card — remove card wrapper on mobile ── */
   .input-card {
     width: 100%;
-    padding: 16px;
-    gap: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    gap: 16px;
   }
 
-  /* Heading block with border-bottom */
+  /* Heading block */
   .input-card__heading {
     font-size: 24px;
     line-height: 1;
@@ -617,6 +622,7 @@
     font-size: 16px;
     white-space: normal;
     line-height: 1.1;
+    margin-bottom: 0;
   }
   .input-card__progress {
     display: none;
@@ -640,6 +646,7 @@
     border: 1px solid rgba(19, 38, 25, 0.3);
     border-radius: 8px;
     overflow: hidden;
+    height: 211px;
     gap: 0;
     grid-template-columns: unset;
   }
