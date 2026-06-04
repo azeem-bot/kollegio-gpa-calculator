@@ -34,7 +34,7 @@ let nextId = 1
 
 // AP: requires ≥ 3 valid courses (type + credits + grade filled)
 function calcApGPAs(courses: Course[]) {
-  const valid = courses.filter(c => c.type && c.credits > 0 && GP[c.grade] !== undefined)
+  const valid = courses.filter(c => c.name.trim() !== '' && c.type && c.credits > 0 && GP[c.grade] !== undefined)
   if (valid.length < 3) return { unweighted: null as null, weighted: null as null }
   const totalCredits = valid.reduce((s, c) => s + c.credits, 0)
   const unweighted = valid.reduce((s, c) => s + GP[c.grade] * c.credits, 0) / totalCredits
@@ -165,7 +165,7 @@ export default function ActiveState({ initialSystem }: Props) {
   const hasGPA = gpaUnweighted !== null
 
   // Progress counter — count courses with a non-empty grade
-  const validCount = courses.filter(c => c.grade !== '').length
+  const validCount = courses.filter(c => c.name.trim() !== '' && c.grade !== '').length
 
   return (
     <div className="active-state">
