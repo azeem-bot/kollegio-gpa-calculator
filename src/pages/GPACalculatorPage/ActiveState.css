@@ -605,13 +605,18 @@
   .input-card {
     width: 100%;
     padding: 16px;
+    gap: 24px;
   }
+
+  /* Heading block with border-bottom */
   .input-card__heading {
-    font-size: 20px;
+    font-size: 24px;
+    line-height: 1;
   }
   .input-card__subheading {
-    font-size: 14px;
+    font-size: 16px;
     white-space: normal;
+    line-height: 1.1;
   }
   .input-card__progress {
     display: none;
@@ -625,6 +630,9 @@
   .course-table__head {
     display: none;
   }
+  .course-table__body {
+    gap: 8px;
+  }
   .course-row {
     display: flex;
     flex-direction: column;
@@ -632,7 +640,6 @@
     border: 1px solid rgba(19, 38, 25, 0.3);
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 8px;
     gap: 0;
     grid-template-columns: unset;
   }
@@ -657,8 +664,12 @@
     height: auto;
     font-size: 16px;
     font-weight: 700;
+    color: #132619;
     letter-spacing: -0.32px;
     flex: 1;
+  }
+  .course-col--name .course-input::placeholder {
+    color: rgba(19, 38, 25, 0.4);
   }
   .course-col__pencil {
     display: flex;
@@ -676,12 +687,14 @@
     flex-direction: column;
     align-items: stretch;
     gap: 2px;
+    width: 100%;
+    box-sizing: border-box;
   }
   .course-col--grade {
     border-bottom: none;
   }
 
-  /* Label above the select */
+  /* Label above the value */
   .course-col__label {
     display: block;
     font-family: 'ABC Diatype Rounded', 'ABCDiatypeRounded', 'Nunito', sans-serif;
@@ -692,29 +705,43 @@
     line-height: 1.25;
   }
 
-  /* Select: full width, no border, flat look */
+  /* Select wrap: value left, chevron right */
   .course-col--type .course-select-wrap,
   .course-col--credits .course-select-wrap,
   .course-col--grade .course-select-wrap {
     width: 100%;
     height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
   }
   .course-col--type .course-select,
   .course-col--credits .course-select,
   .course-col--grade .course-select {
     border: none;
     background: transparent;
-    padding: 0 24px 0 0;
+    padding: 0;
     height: 24px;
     font-size: 16px;
     font-weight: 700;
     color: #132619;
     letter-spacing: -0.32px;
+    flex: 1;
+    min-width: 0;
+    appearance: none;
+    -webkit-appearance: none;
   }
+  /* Chevron: static, right side */
   .course-col--type .course-select__chevron,
   .course-col--credits .course-select__chevron,
   .course-col--grade .course-select__chevron {
-    right: 0;
+    position: static;
+    transform: none;
+    pointer-events: none;
+    color: #132619;
+    flex-shrink: 0;
+    margin-left: 8px;
   }
   .course-col--type .course-select__chevron svg,
   .course-col--credits .course-select__chevron svg,
@@ -723,9 +750,19 @@
     height: 18px;
   }
 
-  /* Add course button */
+  /* Add course button — bordered, full width */
   .add-course-btn {
     width: 100%;
+    height: 36px;
     justify-content: center;
+    border: 1px solid #132619;
+    border-radius: 4px;
+    background: transparent;
+    color: #132619;
+    text-decoration: none;
+  }
+  .add-course-btn img {
+    /* Use currentColor filter for the plus icon */
+    filter: brightness(0);
   }
 }

@@ -70,9 +70,9 @@ const HEADING: Record<CalcSystem, string> = {
 }
 
 const SUBHEADING: Record<CalcSystem, string> = {
-  ap:     "Enter each class, its type, credit and your grade.\nWe'll calculate your weighted and unweighted GPA.",
-  pct:    "Enter your percentage score and select your school's cutoff standard.\nWe'll convert it to an unweighted 4.0 GPA.",
-  letter: "Enter each subject and your grade.\nWe'll calculate your cumulative GPA.",
+  ap:     "Enter each class, its type, credit and your grade. We'll calculate your weighted and unweighted GPA. Add 3 courses to start calculating.",
+  pct:    "Enter your percentage score and select your school's cutoff standard. We'll convert it to an unweighted 4.0 GPA. Add 3 courses to start calculating.",
+  letter: "Enter each subject and your grade. We'll calculate your cumulative GPA. Add 3 courses to start calculating.",
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -164,8 +164,6 @@ export default function ActiveState({ initialSystem }: Props) {
   const showWeighted = system === 'ap'
   const hasGPA = gpaUnweighted !== null
 
-  // Progress counter — count courses with a non-empty grade
-  const validCount = courses.filter(c => c.name.trim() !== '' && c.grade !== '').length
 
   return (
     <div className="active-state">
@@ -223,17 +221,12 @@ export default function ActiveState({ initialSystem }: Props) {
           <div className="input-card">
             {/* Letter panel renders its own heading, subtitle, and switch internally */}
             {system !== 'letter' && (
-              <div className="input-card__heading-row">
-                <div className="input-card__heading-left">
-                  <h2 className="input-card__heading">{HEADING[system]}</h2>
-                  <p className="input-card__subheading">
-                    {SUBHEADING[system].replace(/\n/g, ' ')}
-                  </p>
-                </div>
-                {validCount < 3 && (
-                  <span className="input-card__progress">Add 3 courses to start calculating</span>
-                )}
-              </div>
+              <>
+                <h2 className="input-card__heading">{HEADING[system]}</h2>
+                <p className="input-card__subheading">
+                  {SUBHEADING[system]}
+                </p>
+              </>
             )}
 
             {/* ── AP: course table ── */}
