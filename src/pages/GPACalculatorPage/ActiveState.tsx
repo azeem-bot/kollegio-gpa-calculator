@@ -166,9 +166,6 @@ export default function ActiveState({ initialSystem }: Props) {
 
   // Progress counter — count courses with a non-empty grade
   const validCount = courses.filter(c => c.grade !== '').length
-  const progressText = validCount === 0
-    ? 'Add at least 3 subjects'
-    : `${Math.min(validCount, 3)} of 3 subjects added`
 
   return (
     <div className="active-state">
@@ -233,7 +230,9 @@ export default function ActiveState({ initialSystem }: Props) {
                     {SUBHEADING[system].replace(/\n/g, ' ')}
                   </p>
                 </div>
-                <span className="input-card__progress">{progressText}</span>
+                {validCount < 3 && (
+                  <span className="input-card__progress">Add 3 courses to start calculating</span>
+                )}
               </div>
             )}
 

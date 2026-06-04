@@ -7,7 +7,7 @@
 .active-state__inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 25px;
+  padding: 0 48px;
 }
 
 /* ── Header row — "Your grading system" + system selector ──────────────────── */
@@ -130,7 +130,7 @@
 .active-state__cols {
   display: grid;
   grid-template-columns: 1fr 374px;
-  column-gap: 16px;
+  column-gap: 24px;
   align-items: start;
 }
 
@@ -182,11 +182,6 @@
   letter-spacing: -0.96px;
   line-height: 0.9;
   color: #77cc5b;
-  transition: color 0.3s ease;
-}
-
-.output-card--post .output-card__value {
-  color: #f2efe5;
 }
 
 .output-card__scale {
@@ -195,11 +190,6 @@
   font-weight: 700;
   color: #77cc5b;
   line-height: 1.1;
-  transition: color 0.3s ease;
-}
-
-.output-card--post .output-card__scale {
-  color: #f2efe5;
 }
 
 .output-card__label {
@@ -208,11 +198,6 @@
   font-weight: 700;
   color: #77cc5b;
   margin: 12px 0 0;
-  transition: color 0.3s ease;
-}
-
-.output-card--post .output-card__label {
-  color: #f2efe5;
 }
 
 .output-card__formula-block {

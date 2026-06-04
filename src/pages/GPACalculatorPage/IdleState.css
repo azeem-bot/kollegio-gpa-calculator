@@ -8,11 +8,11 @@
 .idle-hero {
   max-width: 1152px;
   margin: 0 auto;
-  padding: 48px 25px 0;
+  padding: 48px 48px 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 40px;
+  gap: 24px;
 }
 
 .idle-hero__left {
@@ -66,9 +66,9 @@
 .idle-selector {
   max-width: 1152px;
   margin: 24px auto 0;
-  padding: 0 25px;
+  padding: 0 48px;
   display: flex;
-  gap: 16px;
+  gap: 24px;
 }
 
 .idle-selector__card {

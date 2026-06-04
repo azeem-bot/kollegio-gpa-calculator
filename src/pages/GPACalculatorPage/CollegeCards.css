@@ -3,7 +3,7 @@
 .college-matches {
   max-width: 1152px;
   margin: 0 auto;
-  padding: 0 25px;
+  padding: 0 48px;
 }
 
 /* ── Pink pill divider ───────────────────────────────────────────────────── */
@@ -44,7 +44,7 @@
 
 .college-matches__cards {
   display: flex;
-  gap: 16px;
+  gap: 24px;
   margin-top: 32px;
   align-items: stretch;
 }
