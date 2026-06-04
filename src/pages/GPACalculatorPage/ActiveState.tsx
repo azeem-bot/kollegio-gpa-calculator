@@ -254,10 +254,14 @@ export default function ActiveState({ initialSystem }: Props) {
                   </p>
                 ) : (
                   <div className="course-table__body">
-                    {courses.map(course => (
+                    {courses.map(course => {
+                      const nameInputId = `course-name-${course.id}`
+                      return (
                       <div key={course.id} className="course-row">
+                        {/* Row 1 — Course name */}
                         <div className="course-col course-col--name">
                           <input
+                            id={nameInputId}
                             type="text"
                             className="course-input"
                             value={course.name}
@@ -265,9 +269,17 @@ export default function ActiveState({ initialSystem }: Props) {
                             onChange={e => updateCourse(course.id, 'name', e.target.value)}
                             aria-label="Course name"
                           />
+                          <label htmlFor={nameInputId} className="course-col__pencil" aria-label="Edit course name">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                          </label>
                         </div>
 
+                        {/* Row 2 — Course type */}
                         <div className="course-col course-col--type">
+                          <span className="course-col__label">Course type</span>
                           <div className="course-select-wrap">
                             <select
                               className="course-select"
@@ -283,7 +295,9 @@ export default function ActiveState({ initialSystem }: Props) {
                           </div>
                         </div>
 
+                        {/* Row 3 — Credits */}
                         <div className="course-col course-col--credits">
+                          <span className="course-col__label">Credits</span>
                           <div className="course-select-wrap">
                             <select
                               className="course-select"
@@ -299,7 +313,9 @@ export default function ActiveState({ initialSystem }: Props) {
                           </div>
                         </div>
 
+                        {/* Row 4 — Grade */}
                         <div className="course-col course-col--grade">
+                          <span className="course-col__label">Grades</span>
                           <div className="course-select-wrap">
                             <select
                               className="course-select"
@@ -315,6 +331,7 @@ export default function ActiveState({ initialSystem }: Props) {
                           </div>
                         </div>
 
+                        {/* Remove button (desktop only) */}
                         <div className="course-col course-col--remove">
                           <button
                             type="button"
@@ -326,7 +343,8 @@ export default function ActiveState({ initialSystem }: Props) {
                           </button>
                         </div>
                       </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 )}
 
