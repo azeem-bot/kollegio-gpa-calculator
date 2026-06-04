@@ -164,6 +164,12 @@ export default function ActiveState({ initialSystem }: Props) {
   const showWeighted = system === 'ap'
   const hasGPA = gpaUnweighted !== null
 
+  // Progress counter — count courses with a non-empty grade
+  const validCount = courses.filter(c => c.grade !== '').length
+  const progressText = validCount === 0
+    ? 'Add at least 3 subjects'
+    : `${Math.min(validCount, 3)} of 3 subjects added`
+
   return (
     <div className="active-state">
       <div className="active-state__inner">
@@ -220,12 +226,15 @@ export default function ActiveState({ initialSystem }: Props) {
           <div className="input-card">
             {/* Letter panel renders its own heading, subtitle, and switch internally */}
             {system !== 'letter' && (
-              <>
-                <h2 className="input-card__heading">{HEADING[system]}</h2>
-                <p className="input-card__subheading">
-                  {SUBHEADING[system].replace(/\n/g, ' ')}
-                </p>
-              </>
+              <div className="input-card__heading-row">
+                <div className="input-card__heading-left">
+                  <h2 className="input-card__heading">{HEADING[system]}</h2>
+                  <p className="input-card__subheading">
+                    {SUBHEADING[system].replace(/\n/g, ' ')}
+                  </p>
+                </div>
+                <span className="input-card__progress">{progressText}</span>
+              </div>
             )}
 
             {/* ── AP: course table ── */}
@@ -346,7 +355,7 @@ export default function ActiveState({ initialSystem }: Props) {
           </div>
 
           {/* Right: GPA output card — pre/post calculation states */}
-          <div className={`output-card${hasGPA ? '' : ' output-card--pre'}`}>
+          <div className={`output-card${hasGPA ? ' output-card--post' : ''}`}>
             {system === 'letter' ? (
               <>
                 <span className="output-card__top-label">Your cumulative GPA</span>
