@@ -142,11 +142,67 @@
   }
 }
 
-@media (max-width: 760px) {
-  .idle-selector {
+@media (max-width: 768px) {
+  /* Hero — single column, smaller type */
+  .idle-hero {
     flex-direction: column;
+    gap: 0;
+    padding: 32px 24px 0;
+  }
+  .idle-hero__left,
+  .idle-hero__right {
+    width: 100%;
+    flex-shrink: unset;
+  }
+  .idle-hero__h1 {
+    font-size: 32px;
+    letter-spacing: -0.5px;
+  }
+  .idle-hero__right {
+    margin-top: 12px;
+  }
+  .idle-hero__tagline {
+    font-size: 16px;
+  }
+  .idle-hero__desc {
+    font-size: 16px;
+  }
+
+  /* Selector → scrollable pill strip */
+  .idle-selector {
+    flex-direction: row;
+    gap: 8px;
+    padding: 0 24px;
+    margin-top: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .idle-selector::-webkit-scrollbar {
+    display: none;
   }
   .idle-selector__card {
-    height: 100px;
+    height: auto;
+    flex: unset;
+    flex-shrink: 0;
+    border-radius: 100px;
+    padding: 8px 16px;
+    overflow: visible;
+  }
+  .idle-selector__card--active {
+    border-width: 1.5px;
+  }
+  .idle-selector__text {
+    position: static;
+    width: auto;
+  }
+  .idle-selector__title {
+    font-size: 14px;
+    margin: 0;
+    white-space: nowrap;
+  }
+  .idle-selector__subtitle,
+  .idle-selector__illustration {
+    display: none;
   }
 }

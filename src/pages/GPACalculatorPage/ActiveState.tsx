@@ -386,36 +386,38 @@ export default function ActiveState({ initialSystem }: Props) {
                   <span className="output-card__top-label">Colleges use unweighted GPA</span>
                 </div>
 
-                <div className="output-card__section">
-                  <div className="output-card__gpa-row">
-                    <span className="output-card__value">
-                      {hasGPA ? gpaUnweighted!.toFixed(1) : 'XX'}
-                    </span>
-                    <span className="output-card__scale">/4.0</span>
-                  </div>
-                  <p className="output-card__label">Unweighted GPA</p>
-                  <div className="output-card__formula-block">
-                    <span className="output-card__formula-label">Formula</span>
-                    <span className="output-card__formula">Σ(grade pts × credits) ÷ Σ(credits)</span>
-                  </div>
-                </div>
-
-                <div className="output-card__divider" />
-
-                <div className="output-card__section">
-                  <div className="output-card__gpa-row">
-                    <span className="output-card__value">
-                      {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : 'XX'}
-                    </span>
-                    <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
-                  </div>
-                  <p className="output-card__label">Weighted GPA</p>
-                  {showWeighted && (
+                <div className="output-card__sections-wrap">
+                  <div className="output-card__section">
+                    <div className="output-card__gpa-row">
+                      <span className="output-card__value">
+                        {hasGPA ? gpaUnweighted!.toFixed(1) : 'XX'}
+                      </span>
+                      <span className="output-card__scale">/4.0</span>
+                    </div>
+                    <p className="output-card__label">Unweighted GPA</p>
                     <div className="output-card__formula-block">
                       <span className="output-card__formula-label">Formula</span>
-                      <span className="output-card__formula">Σ((grade pts + bonus) × credits) ÷ Σ(credits)</span>
+                      <span className="output-card__formula">Σ(grade pts × credits) ÷ Σ(credits)</span>
                     </div>
-                  )}
+                  </div>
+
+                  <div className="output-card__divider" />
+
+                  <div className="output-card__section">
+                    <div className="output-card__gpa-row">
+                      <span className="output-card__value">
+                        {showWeighted && gpaWeighted !== null ? gpaWeighted.toFixed(1) : 'XX'}
+                      </span>
+                      <span className="output-card__scale">{showWeighted ? '/5.0' : ''}</span>
+                    </div>
+                    <p className="output-card__label">Weighted GPA</p>
+                    {showWeighted && (
+                      <div className="output-card__formula-block">
+                        <span className="output-card__formula-label">Formula</span>
+                        <span className="output-card__formula">Σ((grade pts + bonus) × credits) ÷ Σ(credits)</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </>
             )}

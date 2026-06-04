@@ -93,6 +93,27 @@
   }
 }
 
+@media (max-width: 768px) {
+  .calc-footer__inner {
+    flex-direction: column;
+    gap: 0;
+    padding: 24px;
+  }
+  .calc-footer__logo {
+    margin-bottom: 16px;
+    margin-right: 0;
+    width: 100%;
+  }
+  .calc-footer__columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 16px;
+    width: 100%;
+  }
+  .calc-footer__link {
+    width: auto;
+  }
+}
+
 @media (max-width: 480px) {
   .calc-footer__columns {
     grid-template-columns: 1fr;

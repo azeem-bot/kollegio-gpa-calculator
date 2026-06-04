@@ -127,3 +127,22 @@
     font-size: 32px;
   }
 }
+
+@media (max-width: 768px) {
+  .calc-faq__inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 40px 24px;
+  }
+  .calc-faq__left {
+    position: static;
+    margin-bottom: 24px;
+  }
+  .calc-faq__heading {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+  .calc-faq__sub {
+    font-size: 16px;
+  }
+}

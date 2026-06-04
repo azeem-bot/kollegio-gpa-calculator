@@ -250,14 +250,26 @@
   .college-card,
   .college-cta-card {
     flex: unset;
-    width: calc(50% - 8px);
+    width: calc(50% - 12px);
     min-width: 280px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .college-matches {
+    padding: 0 24px;
+  }
+  .college-matches__cards {
+    flex-direction: column;
+    gap: 16px;
+  }
   .college-card,
   .college-cta-card {
+    flex: unset;
     width: 100%;
+    min-width: unset;
+  }
+  .college-cta-card {
+    min-height: 180px;
   }
 }

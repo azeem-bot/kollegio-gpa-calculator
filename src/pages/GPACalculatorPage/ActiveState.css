@@ -161,6 +161,11 @@
   white-space: nowrap;
 }
 
+/* Desktop: sections-wrap is a no-op container */
+.output-card__sections-wrap {
+  display: contents;
+}
+
 .output-card__section {
   margin-top: 95px;
 }
@@ -526,40 +531,159 @@
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 768px) {
+  /* Page padding */
+  .active-state__inner {
+    padding: 0 24px;
+  }
+
+  /* Grading system header — inside-card look */
+  .grading-system-row {
+    padding: 16px 0 12px;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+  .grading-system-row__label {
+    font-size: 20px;
+  }
+  .system-selector__name {
+    font-size: 16px;
+  }
+  .system-selector__chevron {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Stack: output card first, input card second */
   .active-state__cols {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
-  .grading-system-row {
-    padding-top: 24px;
-  }
+
+  /* ── Output card: horizontal two-column layout ── */
   .output-card {
     width: 100%;
     min-height: auto;
+    padding: 20px 24px;
+    order: -1;
+  }
+  .output-card__top-label {
+    font-size: 13px;
   }
   .output-card__section {
-    margin-top: 32px;
+    margin-top: 16px;
   }
-  .active-cta-band__illustration {
+  .output-card__section + .output-card__divider + .output-card__section {
+    margin-top: 0;
+  }
+
+  /* Side-by-side unweighted | divider | weighted */
+  .output-card__sections-wrap {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-top: 16px;
+  }
+  .output-card__sections-wrap > .output-card__section {
+    flex: 1;
+    margin-top: 0;
+  }
+  .output-card__sections-wrap > .output-card__divider {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    margin-top: 0;
+    background: rgba(249, 247, 242, 0.3);
+  }
+
+  .output-card__value {
+    font-size: 40px;
+  }
+  .output-card__label {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+  .output-card__formula-block {
     display: none;
   }
-  .course-table__head,
-  .course-row {
-    grid-template-columns: 1fr 110px 90px 90px 24px;
-  }
-}
 
-@media (max-width: 600px) {
+  /* ── Input card ── */
+  .input-card {
+    width: 100%;
+    padding: 16px;
+  }
+  .input-card__heading {
+    font-size: 20px;
+  }
+  .input-card__subheading {
+    font-size: 14px;
+    white-space: normal;
+  }
+  .input-card__progress {
+    display: none;
+  }
+  .input-card__heading-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* ── Course rows → card format ── */
   .course-table__head {
     display: none;
   }
   .course-row {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
+    background: #fff;
+    border: 1px solid rgba(19, 38, 25, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    grid-template-columns: unset;
   }
-  .course-col--name    { grid-column: 1 / -1; }
-  .course-col--type    { grid-column: 1; }
-  .course-col--credits { grid-column: 2; }
-  .course-col--grade   { grid-column: 1; }
-  .course-col--remove  { grid-column: 2; justify-content: flex-end; }
+  /* Top row: name + remove */
+  .course-col--name {
+    flex: 1;
+    min-width: 0;
+  }
+  .course-col--name .course-input {
+    border: none;
+    background: transparent;
+    padding: 0;
+    height: auto;
+    font-size: 16px;
+  }
+  .course-col--remove {
+    flex-shrink: 0;
+    order: 0;
+  }
+  .course-col--remove .course-remove-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+  }
+  /* Bottom row: type, credits, grade */
+  .course-col--type,
+  .course-col--credits,
+  .course-col--grade {
+    flex: 1;
+    min-width: 0;
+  }
+  .course-col--type .course-select,
+  .course-col--credits .course-select,
+  .course-col--grade .course-select {
+    height: 40px;
+    font-size: 12px;
+    padding: 0 28px 0 8px;
+  }
+  .course-col--grade .course-input {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  /* Add course button */
+  .add-course-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
