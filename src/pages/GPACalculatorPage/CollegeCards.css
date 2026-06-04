@@ -1,7 +1,8 @@
 /* ── College matches section ──────────────────────────────────────────────── */
 
 .college-matches {
-  max-width: 1152px;
+  max-width: 1200px;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 0 48px;
 }

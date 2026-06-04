@@ -6,7 +6,7 @@
 .calc-faq__inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 60px 48px;
   display: grid;
   grid-template-columns: 354px 1fr;
   gap: 80px;

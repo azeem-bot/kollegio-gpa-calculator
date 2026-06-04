@@ -6,9 +6,10 @@
 /* ── Two-column hero ─────────────────────────────────────────────────────── */
 
 .idle-hero {
-  max-width: 1152px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 48px 48px 0;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -64,9 +65,10 @@
 /* ── Compact selector strip ──────────────────────────────────────────────── */
 
 .idle-selector {
-  max-width: 1152px;
+  max-width: 1200px;
   margin: 24px auto 0;
   padding: 0 48px;
+  box-sizing: border-box;
   display: flex;
   gap: 24px;
 }
