@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import type { Course, Cutoff } from '../../components/GPAConverter/types'
 import { GRADE_OPTIONS } from '../../components/GPAConverter/types'
 import { GP, WEIGHT } from '../../components/GPAConverter/calcGPA'
@@ -12,12 +11,6 @@ import './ActiveState.css'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type CalcSystem = 'ap' | 'pct' | 'letter'
-
-const SYSTEM_ROUTES: Record<CalcSystem, string> = {
-  ap:     '/gpa-converter/ap-gpa-calculator',
-  pct:    '/gpa-converter/percentage-to-gpa',
-  letter: '/gpa-converter/subject-grades-to-gpa',
-}
 
 const SYSTEM_LABELS: Record<CalcSystem, string> = {
   ap:     'AP/Honors',
@@ -89,7 +82,6 @@ interface Props {
 }
 
 export default function ActiveState({ initialSystem }: Props) {
-  const navigate    = useNavigate()
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // System + dropdown
@@ -145,7 +137,6 @@ export default function ActiveState({ initialSystem }: Props) {
     }
 
     setSystem(newSystem)
-    navigate(SYSTEM_ROUTES[newSystem])
   }
 
   // ─── AP course management ────────────────────────────────────────────────────

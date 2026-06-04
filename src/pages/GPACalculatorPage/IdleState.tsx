@@ -1,13 +1,11 @@
-import { ArrowRight } from './Icons'
+import type { CalcSystem } from './ActiveState'
 import './IdleState.css'
 
 interface CardDef {
-  id: string
+  id: CalcSystem
   title: string
   subtitle: string
   illustration: string
-  illustrationAlt: string
-  bgColor: string
   illustrationStyle: React.CSSProperties
 }
 
@@ -17,85 +15,83 @@ const CARDS: CardDef[] = [
     title: 'AP/Honors courses',
     subtitle: 'I took a mix of AP, Honors, and regular courses',
     illustration: '/assets/illustrations/ap-courses.svg',
-    illustrationAlt: 'AP and Honors course grades illustration',
-    bgColor: 'rgba(119, 204, 91, 0.1)',
-    illustrationStyle: { width: 237, height: 279, left: 154, top: 173 },
+    illustrationStyle: { width: 134, height: 158, left: 245, top: -5 },
   },
   {
     id: 'letter',
-    title: 'Standard Subjects',
+    title: 'Standard subjects',
     subtitle: 'I need to convert my subject grades to GPA',
     illustration: '/assets/illustrations/letter-grades.svg',
-    illustrationAlt: 'Letter grades illustration',
-    bgColor: 'rgba(69, 136, 229, 0.1)',
-    illustrationStyle: { width: 251, height: 251, left: 136, top: 160 },
+    illustrationStyle: { width: 154, height: 154, left: 248, top: 4 },
   },
   {
     id: 'pct',
     title: 'Percentage grades',
     subtitle: 'My school gives grades like 75% or 94%',
     illustration: '/assets/illustrations/percentage-grade.svg',
-    illustrationAlt: 'Percentage grade illustration',
-    bgColor: 'rgba(255, 187, 51, 0.1)',
-    illustrationStyle: { width: 244, height: 244, left: 165, top: 192 },
+    illustrationStyle: {
+      width: 166,
+      height: 171,
+      left: 238,
+      top: 13,
+      transform: 'rotate(-28.25deg)',
+    },
   },
 ]
 
 interface Props {
-  onSelect: (system: 'ap' | 'pct' | 'letter') => void
+  activeSystem: CalcSystem
+  onSelect: (system: CalcSystem) => void
 }
 
-export default function IdleState({ onSelect }: Props) {
+export default function IdleState({ activeSystem, onSelect }: Props) {
   return (
     <div className="idle-state">
-      <div className="idle-state__inner">
-        {/* Hero heading */}
-        <h1 className="idle-state__h1">
-          <span className="idle-state__h1-dim">High School GPA calculator: </span>
-          <span className="idle-state__h1-dark">See which colleges match your profile</span>
-        </h1>
 
-        {/* Selection cards */}
-        <div className="idle-state__cards">
-          {CARDS.map(card => (
-            <button
-              key={card.id}
-              type="button"
-              className="idle-card"
-              style={{ background: card.bgColor }}
-              onClick={() => onSelect(card.id as 'ap' | 'pct' | 'letter')}
-              aria-label={`Select ${card.title}`}
-            >
-              <div className="idle-card__content">
-                <p className="idle-card__title">{card.title}</p>
-                <p className="idle-card__subtitle">{card.subtitle}</p>
-              </div>
-
-              <img
-                src={card.illustration}
-                alt={card.illustrationAlt}
-                className="idle-card__illustration"
-                style={{
-                  width: card.illustrationStyle.width,
-                  height: card.illustrationStyle.height,
-                  left: card.illustrationStyle.left,
-                  top: card.illustrationStyle.top,
-                }}
-              />
-
-              <span className="idle-card__btn">
-                Convert
-                <ArrowRight size={18} />
-              </span>
-            </button>
-          ))}
+      {/* ── Two-column hero ─────────────────────────────────────────── */}
+      <div className="idle-hero">
+        <div className="idle-hero__left">
+          <h1 className="idle-hero__h1">
+            <span className="idle-hero__h1-dim">High School GPA calculator: </span>
+            <span className="idle-hero__h1-dark">See which colleges match your profile</span>
+          </h1>
         </div>
 
-        {/* Subtitle below cards */}
-        <p className="idle-state__sub">
-          Enter your courses and grades. We calculate your GPA the way admissions officers do.
-        </p>
+        <div className="idle-hero__right">
+          <p className="idle-hero__tagline">Calculate your GPA, find your colleges</p>
+          <p className="idle-hero__desc">
+            Enter your grades below. We'll calculate your GPA the way admissions
+            officers do — then show you the schools where you're competitive.
+          </p>
+        </div>
       </div>
+
+      {/* ── Compact selector strip ──────────────────────────────────── */}
+      <div className="idle-selector">
+        {CARDS.map(card => (
+          <button
+            key={card.id}
+            type="button"
+            className={`idle-selector__card${activeSystem === card.id ? ' idle-selector__card--active' : ''}`}
+            onClick={() => onSelect(card.id)}
+            aria-pressed={activeSystem === card.id}
+          >
+            <div className="idle-selector__text">
+              <p className="idle-selector__title">{card.title}</p>
+              <p className="idle-selector__subtitle">{card.subtitle}</p>
+            </div>
+
+            <img
+              src={card.illustration}
+              alt=""
+              className="idle-selector__illustration"
+              style={card.illustrationStyle}
+              aria-hidden="true"
+            />
+          </button>
+        ))}
+      </div>
+
     </div>
   )
 }
