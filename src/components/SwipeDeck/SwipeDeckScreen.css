@@ -1,0 +1,111 @@
+.swipe-deck-screen {
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--background-base);
+}
+
+.deck-area {
+  position: relative;
+  flex: 1;
+  min-height: 420px;
+}
+
+.card-slot {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(334px, 100%);
+  height: min(605px, 100%);
+  transition: transform 400ms cubic-bezier(.2, 1, .3, 1);
+}
+
+.card-slot.deck-pos-0 {
+  z-index: 4;
+  transform: none;
+}
+
+.card-slot.deck-pos-1 {
+  z-index: 3;
+  transform: translateY(10px) scale(0.96) rotate(-1.5deg);
+  pointer-events: none;
+}
+
+.card-slot.deck-pos-2 {
+  z-index: 2;
+  transform: translateY(20px) scale(0.92) rotate(1.5deg);
+  pointer-events: none;
+}
+
+.card-slot.deck-pos-3 {
+  z-index: 1;
+  transform: translateY(30px) scale(0.88) rotate(-1deg);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.card-slot--exiting {
+  z-index: 5;
+  pointer-events: none;
+}
+
+.card-slot--exit-right {
+  animation: exit-right 500ms cubic-bezier(.4, .05, .4, 1) forwards;
+}
+
+.card-slot--exit-left {
+  animation: exit-left 500ms cubic-bezier(.4, .05, .4, 1) forwards;
+}
+
+@keyframes exit-right {
+  from { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  to { transform: translate(120vw, -40px) rotate(22deg); opacity: 0; }
+}
+
+@keyframes exit-left {
+  from { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  to { transform: translate(-120vw, -40px) rotate(-22deg); opacity: 0; }
+}
+
+.deck-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 32px;
+}
+
+.deck-empty__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--content-primary);
+}
+
+.deck-empty__subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--content-secondary);
+}
+
+.deck-empty__reset {
+  margin-top: 12px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: var(--g2);
+  color: var(--content-inverse-secondary);
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}

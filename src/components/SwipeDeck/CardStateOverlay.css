@@ -1,0 +1,91 @@
+.state-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  border-radius: var(--r-m);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  gap: 12px;
+  opacity: 0;
+  animation: overlay-fade-in 250ms ease forwards;
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.state-overlay--save {
+  background: rgba(34, 115, 34, 0.94);
+}
+
+.state-overlay--pass {
+  background: rgba(242, 239, 229, 0.96);
+}
+
+.state-overlay__icon--save {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 22px;
+}
+
+.state-overlay__dash {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--content-secondary);
+}
+
+.state-overlay__primary {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.state-overlay--save .state-overlay__primary {
+  color: #fff;
+}
+
+.state-overlay--pass .state-overlay__primary {
+  color: var(--content-primary);
+}
+
+.state-overlay__secondary {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.state-overlay--save .state-overlay__secondary {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.state-overlay--pass .state-overlay__secondary {
+  color: var(--content-secondary);
+}
+
+.state-overlay__action {
+  margin-top: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  background: #fff;
+  color: var(--content-primary);
+  border: none;
+  cursor: pointer;
+}
+
+.state-overlay--pass .state-overlay__action {
+  border: 1px solid var(--border-primary);
+}
